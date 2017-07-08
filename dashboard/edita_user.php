@@ -38,8 +38,16 @@
               <li><a href="new_user.php">Novo Usuário</a></li>
             </ul>
           </li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pautas<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="../pautas/add_pauta_admin.php">Adicionar Pautas</a></li>
+              <li><a href="../pautas/pautas_finalizadas_admin.php">Pautas Finalizadas</a></li>
+              <li><a href="../pautas/pautas_conclusao_admin.php">Pautas em conclusão</a></li>
+            </ul>
+          </li>
+            <li><a href="../pautas/sobre_admin.php">Sobre</a></li>
+            <li class="dropdown">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -83,7 +91,7 @@
       					<td><?php if($linha['bolsista']==1){echo "SIM";}else{echo "NÃO";}?></td>
       					<td><?php echo $linha['mat'];?></td>
       					<td><a href="edita_user.php?id=<?php echo $linha['id'];?>"><img src="../imagens/editar.png" alt=""></a></td>
-      					<td><a href="../BD/apagar.php"><img src="../imagens/apagar.png" alt=""></a></td>
+      					<td><a href="../BD/delete.php?id=<?php echo $linha['id'];?>"><img src="../imagens/apagar.png" alt=""></a></td>
       					<?php }} ?>
       				</tr>
             </tbody>

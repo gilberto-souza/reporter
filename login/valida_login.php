@@ -14,7 +14,8 @@ if (empty($result)) {
 }else{
 	//Define valor na sessao usuario e redireciona para a area administrativa
 	$_SESSION['usuarioNome'] = $result['nome'];
-	$_SESSION['acesso'] = $result['nivel_acesso_ID'];	
+	$_SESSION['mat'] = $result['mat'];
+	$_SESSION['acesso'] = $result['nivel_acesso_ID'];
 	if ($_SESSION['acesso']==1) {
 		header("Location:../dashboard/dashboard_admin.php");
 	}else{

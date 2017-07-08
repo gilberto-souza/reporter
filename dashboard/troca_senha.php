@@ -33,8 +33,16 @@
               <li><a href="new_user.php">Novo Usuário</a></li>
             </ul>
           </li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pautas<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="../pautas/add_pauta_admin.php">Adicionar Pautas</a></li>
+              <li><a href="../pautas/pautas_finalizadas_admin.php">Pautas Finalizadas</a></li>
+              <li><a href="../pautas/pautas_conclusao_admin.php">Pautas em conclusão</a></li>
+            </ul>
+          </li>
+            <li><a href="../pautas/sobre_admin.php">Sobre</a></li>
+            <li class="dropdown">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -47,52 +55,25 @@
       </div>
     </nav>
     <div class="container theme-showcase" role="main">
-      <section id="main-content">
-        <section class="wrapper">
-                        <div class="titulo-pagina">
-  <span class="fa-stack fa-lg text-primary">
-   <i class="fa fa-circle fa-stack-2x"></i> 
-    <i class="fa fa-key fa-stack-1x fa-inverse"></i>
-  </span>
+    <div class="titulo-pagina text-center">
   <h2 class="text-primary">Alterar Senha</h2>
 </div>
-<div class="row">
-  <div class="col-lg-12">
-    <section class="panel">
-      <div class="panel-body">
-        <div class="position-center">
-          <form action="" class="form-horizontal" role="form" autocomplete="off" method="post" accept-charset="iso-8859-1">
-            <input type="hidden" name="id_usuario" value="152080341" />
-            <div class="form-group">
-              <label for="senha_atual" class="col-lg-2 col-sm-2 control-label">Senha atual</label>
-              <div class="col-lg-5">
-                <input type="password" class="form-control" name="senha_atual" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="nova_senha" class="col-lg-2 col-sm-2 control-label">Nova senha</label>
-              <div class="col-lg-5">
-                <input type="password" class="form-control" name="nova_senha" />
-                <p class="help-block">Mínimo de 6 caracteres</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="repita_senha" class="col-lg-2 col-sm-2 control-label">Repetir a nova senha</label>
-              <div class="col-lg-5">
-                <input type="password" class="form-control" name="repita_senha" />
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-lg-offset-2 col-lg-10">
-                <input type="submit" class="btn btn-info" value="Confirmar">
-                <input type="button" class="btn" value="Cancelar">
-              </div>
-            </div>
-          </form>       
-          </div>
+  <div class="">
+    <form action="../alterar senha/redefinir_senha.php" class="form-Login text-center" method="POST">
+      <input type="password" name="atual" class="form-control" placeholder="Senha Atual" required autofocus>
+      <input type="password" name="senha1" class="form-control" placeholder="Nova Senha" required>
+      <input type="password" name="senha2" class="form-control" placeholder="Repita a Senha" required>
+      <button type="submit" class="btn btn-lg btn-primary btn-block">Alterar</button>
+    </form>
+      <p class="text-center text-danger">
+        <?php
+          if(isset($_SESSION['loginErro'])){
+            echo $_SESSION['loginErro'];
+            unset($_SESSION['loginErro']);
+          }
+        ?>
+      </p>
       </div>
-    </section>
-  </div>
 </div>      
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>

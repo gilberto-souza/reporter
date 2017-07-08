@@ -9,6 +9,7 @@
 		$sql = "UPDATE usuario SET pass = '$senha1' WHERE mat = '$mat'";
 		$query = $conecta->query($sql);
 		$_SESSION['loginErro'] = "Senha Alterada com Sucesso";
+		session_destroy();
 		header('Location:../');
 	}else{
 		$_SESSION['loginErro'] = "Senhas não correspondem.";

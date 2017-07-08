@@ -37,8 +37,16 @@
               <li><a href="new_user.php">Novo Usuário</a></li>
             </ul>
           </li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pautas<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="../pautas/add_pauta_admin.php">Adicionar Pautas</a></li>
+              <li><a href="../pautas/pautas_finalizadas_admin.php">Pautas Finalizadas</a></li>
+              <li><a href="../pautas/pautas_conclusao_admin.php">Pautas em conclusão</a></li>
+            </ul>
+          </li>
+            <li><a href="../pautas/sobre_admin.php">Sobre</a></li>
+            <li class="dropdown">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -65,11 +73,11 @@
           </div>
           <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Matricula:</label>
-            <input type="password" name ="mat" class="form-control" id="exampleInputEmail1" placeholder="Matricula">
+            <input type="text" name ="mat" class="form-control" id="exampleInputEmail1" placeholder="Matricula">
           </div>
           <div class="form-group col-md-4">
             <label for="exampleInputEmail1">Nivel de Acesso:</label>
-              <select class="form-control" name="size">
+              <select class="form-control" name="nivel">
                 <option value="1">Administrador</option>
                 <option value="2">Editor</option>
                 <option value="3">...</option>
@@ -77,12 +85,20 @@
           </div>
           <div class="form-group col-md-4">
               <label for="exampleInputEmail1">Bolsista:</label>
-              <select class="form-control" name="size">
+              <select class="form-control" name="bol">
                 <option value="1">Sim</option>
                 <option value="2">Não</option>
               </select>
           </div>
           <div class="text-center">
+          <p class="text-center text-danger">
+              <?php
+                if(isset($_SESSION['loginErro'])){
+                  echo $_SESSION['loginErro'];
+                  unset($_SESSION['loginErro']);
+                }
+              ?>
+            </p>
             <button type="submit" class="btn btn-default" style="margin-right: 2%;">CADASTRAR</button>
             <button type="reset" class="btn btn-default">LIMPAR</button>
           </div>
