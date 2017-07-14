@@ -1,13 +1,6 @@
 <?php 
 	session_start();
-	include_once("../login/seguranca.php");
-	include_once("../BD/BD.php");
-  $id = 1;
-  $sql = "SELECT * FROM pautas WHERE terminou=?";
-  $query = $conect->prepare($sql);
-  $query->bindparam('1',$id);
-  $query->execute();
-  $total = $query->rowCount(); 
+	include_once("../login/seguranca2.php");
  ?>
  <!DOCTYPE html>
  <html lang="pt-br">
@@ -32,28 +25,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="../dashboard/dashboard_admin.php">Pagina Inicial</a></li>
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuários<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="../dashboard/users.php">Usuários Cadastrados</a></li>
-              <li><a href="../dashboard/new_user.php">Novo Usuário</a></li>
-            </ul>
-          </li>
-            <li class="dropdown">
+          	<li class="active"><a href="dashboard.php">Pagina Inicial</a></li>
+          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pautas<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="../pautas/add_pauta_admin.php">Adicionar Pautas</a></li>
-              <li><a href="../pautas/pautas_finalizadas_admin.php">Pautas Finalizadas</a></li>
-              <li><a href="../pautas/pautas_conclusao_admin.php">Pautas em conclusão</a></li>
+              <li><a href="pauta_finalizadas.php">Pautas Finalizadas</a></li>
+              <li><a href="pauta_conclusao.php">Pautas em conclusão</a></li>
             </ul>
           </li>
-            <li><a href="../pautas/sobre_admin.php">Sobre</a></li>
-            <li class="dropdown">
+            <li><a href="sobre.php">Sobre</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../dashboard/troca_senha.php">Alterar Senha</a></li>
+                <li><a href="troca_senha.php">Alterar Senha</a></li>
                 <li><a href="../login/sair.php">Sair</a></li>
               </ul>
             </li>
@@ -62,22 +46,26 @@
       </div>
     </nav>
     <div class="container theme-showcase" role="main">
-      <div class="page-header">
-        <h1>Pautas Finalizadas</h1>
+    <div class="titulo-pagina text-center">
+  <h2 class="text-primary">Alterar Senha</h2>
+</div>
+  <div class="">
+    <form action="../alterar senha/redefinir_user.php" class="form-Login text-center" method="POST">
+      <input type="password" name="atual" class="form-control" placeholder="Senha Atual" required autofocus>
+      <input type="password" name="senha1" class="form-control" placeholder="Nova Senha" required>
+      <input type="password" name="senha2" class="form-control" placeholder="Repita a Senha" required>
+      <button type="submit" class="btn btn-lg btn-primary btn-block">Alterar</button>
+    </form>
+      <p class="text-center text-danger">
+        <?php
+          if(isset($_SESSION['loginErro'])){
+            echo $_SESSION['loginErro'];
+            unset($_SESSION['loginErro']);
+          }
+        ?>
+      </p>
       </div>
-      <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-      <?php if ($total>0) {
-        while($pauta = $query->fetch(PDO::FETCH_ASSOC)){ ?>
-        <div class="col-md-3">
-          <h2><?php echo $pauta['titulo']; ?></h2>
-          <p><?php echo $pauta['descricao']; ?></p>
-          <p><a class="btn btn-default" href="pautas_visualizar_admin.php?id=<?php echo $pauta['id']; ?>" role="button">Ver detalhes &raquo;</a></p>
-        </div>
-        <?php }} ?>
-      </div>
-     </div>
+</div>  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
  </body>

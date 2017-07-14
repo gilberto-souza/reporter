@@ -3,16 +3,18 @@
 	include_once("../login/seguranca.php");
 	include_once("../BD/BD.php");
   $id = $_REQUEST['id'];
-	$dados = "SELECT * FROM usuario";
-  $dados = $conecta->query($dados);
-	$total = mysqli_num_rows($dados);
+	$dados = "SELECT * FROM usuario WHERE id = ?";
+  $query = $conect->prepare($dados);
+  $query->bindparam('1',$id);
+  $query->execute();
+	$usuario = $query->fetch(PDO::FETCH_ASSOC);
  ?>
  <!DOCTYPE html>
  <html lang="pt-br">
  <head>
  	<meta charset="UTF-8">
  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
- 	<title>Usuários</title>
+ 	<title>Repórter Junino</title>
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="../css/estilo.css">
  </head>
@@ -26,7 +28,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Reporter Junino</a>
+          <a class="navbar-brand" href="#">Repórter Junino</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -61,43 +63,49 @@
     </nav>
     <div class="container theme-showcase" role="main">
       <div class="page-header">
-        <h1>Usuários Cadastrados</h1>
+        <h1>Editar Usuário</h1>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nome</th>
-                <th>email</th>
-                <th>Usuário</th>
-                <th>Nivel de Acesso</th>
-                <th>Bolsista</th>
-                <th>Matricula</th>                
-                <th>Editar</th>
-                <th>Apagar</th>
-              </tr>
-            </thead>
-            <tbody>            
-            <?php if ($total>0) {
-            	while($linha = mysqli_fetch_assoc($dados)){ ?>
-      				<tr>
-      					<td><?php echo $linha['id'];?></td>
-      					<td><?php echo $linha['nome'];?></td>
-      					<td><?php echo $linha['email'];?></td>
-      					<td><?php echo $linha['user'];?></td>
-      					<td><?php echo $linha['nivel_acesso_ID'];?></td>					
-      					<td><?php if($linha['bolsista']==1){echo "SIM";}else{echo "NÃO";}?></td>
-      					<td><?php echo $linha['mat'];?></td>
-      					<td><a href="edita_user.php?id=<?php echo $linha['id'];?>"><img src="../imagens/editar.png" alt=""></a></td>
-      					<td><a href="../BD/delete.php?id=<?php echo $linha['id'];?>"><img src="../imagens/apagar.png" alt=""></a></td>
-      					<?php }} ?>
-      				</tr>
-            </tbody>
-          </table>
+        <form method="POST" action="../BD/update.php?id=<?php echo $id; ?>">
+        <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Nome:</label>
+            <input type="text" name="nome" class="form-control" id="exampleInputEmail1" value="<?php echo $usuario['nome']; ?>">
         </div>
-     </div>
+        <div class="form-group col-md-8">
+            <label for="exampleInputEmail1">Endereço de e-mail:</label>
+            <input type="email" name ="email" class="form-control" id="exampleInputEmail1" value="<?php echo $usuario['email']; ?>">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Matricula:</label>
+            <input type="text" name ="mat" class="form-control" id="exampleInputEmail1" value="<?php echo $usuario['mat']; ?>">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="exampleInputEmail1">Nivel de Acesso:</label>
+              <select class="form-control" name="nivel">
+                <option value="1">Administrador</option>
+                <option value="2">Editor</option>
+                <option value="3">...</option>
+              </select>
+          </div>
+          <div class="form-group col-md-4">
+              <label for="exampleInputEmail1">Bolsista:</label>
+              <select class="form-control" name="bol">
+                <option value="1">Sim</option>
+                <option value="2">Não</option>
+              </select>
+          </div>
+          <div class="text-center">
+          <p class="text-center text-danger">
+              <?php
+                if(isset($_SESSION['loginErro'])){
+                  echo $_SESSION['loginErro'];
+                  unset($_SESSION['loginErro']);
+                }
+              ?>
+            </p>
+            <button type="submit" class="btn btn-default" style="margin-right: 2%;">CADASTRAR</button>
+            <button type="reset" class="btn btn-default">LIMPAR</button>
+          </div>
+        </form>
      </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>

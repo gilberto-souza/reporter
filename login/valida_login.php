@@ -3,9 +3,13 @@ include_once("../BD/BD.php");
 session_start();
 $usuario = $_POST['user'];
 $senha = $_POST['pass'];
-$sql = "SELECT * FROM usuario WHERE user = '$usuario' AND pass='$senha'";
-$query = $conecta->query($sql);
-$result = mysqli_fetch_assoc($query);
+
+$dados = "SELECT * FROM usuario WHERE user=? AND pass= ?";
+$query = $conect->prepare($dados);
+$query->bindparam("1", $usuario);
+$query->bindparam("2", $senha);
+$query->execute();
+$result = $query->fetch(PDO::FETCH_ASSOC);
 
 if (empty($result)) {
 	//mensagem de erro
@@ -19,7 +23,7 @@ if (empty($result)) {
 	if ($_SESSION['acesso']==1) {
 		header("Location:../dashboard/dashboard_admin.php");
 	}else{
-		echo "membro";
+		header("Location:../dash_user/dashboard.php");
 	}
 }
 

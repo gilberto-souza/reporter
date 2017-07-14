@@ -5,9 +5,11 @@ session_start();
 $mat = $_POST['mat'];
 $_SESSION['matri'] = $mat;
 
-$dados = "SELECT * FROM usuario WHERE mat='$mat'";
-$dados = $conecta->query($dados);
-$total = mysqli_num_rows($dados);
+$dados = "SELECT * FROM usuario WHERE mat=?";
+$query = $conect->prepare($dados);
+$query->bindparam("1", $mat);
+$query->execute();
+$total = $query->fetch(PDO::FETCH_ASSOC);
 
 if (empty($total)) {
 	//mensagem de erro
@@ -18,5 +20,5 @@ if (empty($total)) {
 	header("location:alterando.php");
 	
 }
-
+*/
  ?>

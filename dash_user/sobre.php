@@ -1,13 +1,6 @@
 <?php 
 	session_start();
-	include_once("../login/seguranca.php");
-	include_once("../BD/BD.php");
-  $id = 1;
-  $sql = "SELECT * FROM pautas WHERE terminou=?";
-  $query = $conect->prepare($sql);
-  $query->bindparam('1',$id);
-  $query->execute();
-  $total = $query->rowCount(); 
+	include_once("../login/seguranca2.php");
  ?>
  <!DOCTYPE html>
  <html lang="pt-br">
@@ -32,28 +25,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="../dashboard/dashboard_admin.php">Pagina Inicial</a></li>
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuários<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="../dashboard/users.php">Usuários Cadastrados</a></li>
-              <li><a href="../dashboard/new_user.php">Novo Usuário</a></li>
-            </ul>
-          </li>
-            <li class="dropdown">
+          	<li class="active"><a href="dashboard.php">Pagina Inicial</a></li>
+          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pautas<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="../pautas/add_pauta_admin.php">Adicionar Pautas</a></li>
-              <li><a href="../pautas/pautas_finalizadas_admin.php">Pautas Finalizadas</a></li>
-              <li><a href="../pautas/pautas_conclusao_admin.php">Pautas em conclusão</a></li>
+              <li><a href="pauta_finalizadas.php">Pautas Finalizadas</a></li>
+              <li><a href="pauta_conclusao.php">Pautas em conclusão</a></li>
             </ul>
           </li>
-            <li><a href="../pautas/sobre_admin.php">Sobre</a></li>
-            <li class="dropdown">
+            <li><a href="sobre.php">Sobre</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../dashboard/troca_senha.php">Alterar Senha</a></li>
+                <li><a href="troca_senha.php">Alterar Senha</a></li>
                 <li><a href="../login/sair.php">Sair</a></li>
               </ul>
             </li>
@@ -61,23 +45,14 @@
         </div>
       </div>
     </nav>
-    <div class="container theme-showcase" role="main">
+    <div class="container">
+
       <div class="page-header">
-        <h1>Pautas Finalizadas</h1>
+        <h1>Sobre o Projeto</h1>
       </div>
-      <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-      <?php if ($total>0) {
-        while($pauta = $query->fetch(PDO::FETCH_ASSOC)){ ?>
-        <div class="col-md-3">
-          <h2><?php echo $pauta['titulo']; ?></h2>
-          <p><?php echo $pauta['descricao']; ?></p>
-          <p><a class="btn btn-default" href="pautas_visualizar_admin.php?id=<?php echo $pauta['id']; ?>" role="button">Ver detalhes &raquo;</a></p>
-        </div>
-        <?php }} ?>
+      <p>O <b>PROJETO REPÓRTER JUNINO</b> foi lançado oficialmente em 3 de junho de 2005 pelos professores Fernando Firmino da Silva e Águeda Miranda Cabral para cobertura, na modalidade jornalismo digital, do São joão de Campina Grande e do Nordeste. Em 2017, chegamos aos <b>12 ANOS DO REPÓRTER JUNINO.</b> E essa décima segunda edição é coordenada pelos professores Fernando Firmino da Silva e Arão de Azevedo. Projeto de extensãodo Curso de Comunicação Social - Jornalismo da Universidade Estadual da Paraíba - UEPB, o <b>Repórter Junino</b> está na sua décima edição ininterrupta e surgiu de forma incipiente numa turma de 30 e poucos alunos de Novas Tecnologias da Comunicação do Departamento que buscava aliar teoria e prática do jornalismo mais a oportunidade de utilizar os festejos juninos como laboratório de produção. Em 2010, o projeto foi apontado como um dos mais antigos projetos e exemplo de laboratório de ensino e práticas de jornalismo digital no Brasil no livro "Mapeamento do Ensino do Jornalismo DIgital em 2010", publicado pelo Rumos Itaú Cultural.</p>
+
       </div>
-     </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
  </body>

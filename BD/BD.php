@@ -1,5 +1,5 @@
 <?php 
 
-$conecta = new mysqli("localhost","root","","rpj") or die ("Erro na conexao");
+$conect = new PDO("mysql:host=localhost;dbname=rpj","root","") or die ("Erro na conexao");
 
  ?>

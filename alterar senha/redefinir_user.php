@@ -8,25 +8,24 @@
 	$mat = $_SESSION['mat'];
 	$sql = "SELECT * FROM usuario WHERE mat = ?";
 	$query = $conect->prepare($sql);
-	$query->bindparam('1',$mat);
+	$query->bindparam("1",$mat);
 	$query->execute();
 	$result = $query->fetch(PDO::FETCH_ASSOC);
 
 	if ($atual!=$result['pass']) {
 		$_SESSION['loginErro'] = "Senha Atual incorreta!";
 		header('Location:../dashboard/troca_senha.php');
-	}
-	else if ($senha1!=$senha2 || $senha1=="") {
+	}else if ($senha1!=$senha2 || $senha1=="") {
 		$_SESSION['loginErro'] = "Senhas não Correspondem!";
 		header('Location:../dashboard/troca_senha.php');
 	}else{
 		$sql = "UPDATE usuario SET pass = ?  WHERE mat = ?";
 		$query = $conect->prepare($sql);
-		$query->bindparam('1',$senha1);
+		$query->bindparam('1',$senha2);
 		$query->bindparam('2',$mat);
 		$query->execute();
 		$_SESSION['loginErro'] = "Senha Alterada com Sucesso!";
-		header('Location:../dashboard/troca_senha.php');
+		header('Location:../dash_user/troca_senha.php');
 	}
- ?>
 
+ ?>

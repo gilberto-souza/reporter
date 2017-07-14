@@ -1,6 +1,36 @@
 <?php 
 	session_start();
 	include_once("../login/seguranca.php");
+	include_once("../BD/BD.php");
+  $acesso=$_SESSION['acesso'];
+  $id = $_REQUEST['id'];
+  
+  $sql = "SELECT * FROM pautas WHERE terminou=?";
+  $query = $conect->prepare($sql);
+  $query->bindparam('1',$id);
+  $query->execute();
+  $pauta = $query->fetch(PDO::FETCH_ASSOC);
+
+  $editor_id = $pauta['editor'];
+  $editor = "SELECT * FROM usuario WHERE mat=?";
+  $editor = $conect->prepare($editor);
+  $editor->bindparam('1',$editor_id);
+  $editor->execute();
+  $editor = $editor->fetch(PDO::FETCH_ASSOC);
+
+  $fotografo_id = $pauta['fotografo'];
+  $fotografo = "SELECT * FROM usuario WHERE mat=?";
+  $fotografo = $conect->prepare($fotografo);
+  $fotografo->bindparam('1',$fotografo_id);
+  $fotografo->execute();
+  $fotografo = $fotografo->fetch(PDO::FETCH_ASSOC);
+
+  $reporter_id = $pauta['reporter'];
+  $reporter = "SELECT * FROM usuario WHERE mat=?";
+  $reporter = $conect->prepare($reporter);
+  $reporter->bindparam('1',$reporter_id);
+  $reporter->execute();
+  $reporter = $reporter->fetch(PDO::FETCH_ASSOC);
  ?>
  <!DOCTYPE html>
  <html lang="pt-br">
@@ -25,12 +55,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="dashboard_admin.php">Pagina Inicial</a></li>
+          	<li><a href="../dashboard/dashboard_admin.php">Pagina Inicial</a></li>
             <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuários<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="users.php">Usuários Cadastrados</a></li>
-              <li><a href="new_user.php">Novo Usuário</a></li>
+              <li><a href="../dashboard/users.php">Usuários Cadastrados</a></li>
+              <li><a href="../dashboard/new_user.php">Novo Usuário</a></li>
             </ul>
           </li>
             <li class="dropdown">
@@ -46,7 +76,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="troca_senha.php">Alterar Senha</a></li>
+                <li><a href="../dashboard/troca_senha.php">Alterar Senha</a></li>
                 <li><a href="../login/sair.php">Sair</a></li>
               </ul>
             </li>
@@ -56,52 +86,29 @@
     </nav>
     <div class="container theme-showcase" role="main">
       <div class="page-header">
-        <h1>Adicionar Novo Usuário</h1>
+        <h1><?php echo $pauta['titulo']; ?></h1>
       </div>
-        <form method="POST" action="../BD/insert.php">
-        <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Nome:</label>
-            <input type="text" name="nome" class="form-control" id="exampleInputEmail1" placeholder="Nome">
-        </div>
-        <div class="form-group col-md-8">
-            <label for="exampleInputEmail1">Endereço de e-mail:</label>
-            <input type="email" name ="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Matricula:</label>
-            <input type="text" name ="mat" class="form-control" id="exampleInputEmail1" placeholder="Matricula">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="exampleInputEmail1">Nivel de Acesso:</label>
-              <select class="form-control" name="nivel">
-                <option value="1">Administrador</option>
-                <option value="2">Editor</option>
-                <option value="3">...</option>
-              </select>
-          </div>
-          <div class="form-group col-md-4">
-              <label for="exampleInputEmail1">Bolsista:</label>
-              <select class="form-control" name="bol">
-                <option value="1">Sim</option>
-                <option value="2">Não</option>
-              </select>
-          </div>
-          <div class="text-center">
-          <p class="text-center text-danger">
-              <?php
-                if(isset($_SESSION['loginErro'])){
-                  echo $_SESSION['loginErro'];
-                  unset($_SESSION['loginErro']);
-                }
-              ?>
-            </p>
-            <button type="submit" class="btn btn-default" style="margin-right: 2%;">CADASTRAR</button>
-            <button type="reset" class="btn btn-default">LIMPAR</button>
-          </div>
-        </form>
+      <div class="col-md-12">
+        <h3>Tema: <?php echo $pauta['tema']; ?></h3>
+      </div>
+      <div class="col-md-12" style="padding-top: 2%;">
+        <h4>Descrição:</h4>
+        <p><?php echo $pauta['descricao']; ?></p>
+      </div>      
+      <div class="col-md-4">
+          <h2>Editor:</h2>
+          <p><?php echo $editor['nome']; ?></p>
+      </div> 
+      <div class="col-md-4">
+          <h2>Fotógrafo:</h2>
+          <p><?php echo $fotografo['nome']; ?></p>
+      </div>
+      <div class="col-md-4">
+          <h2>Repórter:</h2>
+          <p><?php echo $reporter['nome']; ?></p>
+        </div>   
      </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../js/ma_oe.js"></script>
  </body>
  </html>

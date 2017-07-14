@@ -1,13 +1,36 @@
 <?php 
-	session_start();
-	include_once("../login/seguranca.php");
-	include_once("../BD/BD.php");
-  $id = 1;
+	 session_start();
+  include_once("../login/seguranca2.php");
+  include_once("../BD/BD.php");
+  $acesso=$_SESSION['acesso'];
+  $id = $_REQUEST['id'];
+
   $sql = "SELECT * FROM pautas WHERE terminou=?";
   $query = $conect->prepare($sql);
   $query->bindparam('1',$id);
   $query->execute();
-  $total = $query->rowCount(); 
+  $pauta = $query->fetch(PDO::FETCH_ASSOC);
+
+  $editor_id = $pauta['editor'];
+  $editor = "SELECT * FROM usuario WHERE mat=?";
+  $editor = $conect->prepare($editor);
+  $editor->bindparam('1',$editor_id);
+  $editor->execute();
+  $editor = $editor->fetch(PDO::FETCH_ASSOC);
+
+  $fotografo_id = $pauta['fotografo'];
+  $fotografo = "SELECT * FROM usuario WHERE mat=?";
+  $fotografo = $conect->prepare($fotografo);
+  $fotografo->bindparam('1',$fotografo_id);
+  $fotografo->execute();
+  $fotografo = $fotografo->fetch(PDO::FETCH_ASSOC);
+
+  $reporter_id = $pauta['reporter'];
+  $reporter = "SELECT * FROM usuario WHERE mat=?";
+  $reporter = $conect->prepare($reporter);
+  $reporter->bindparam('1',$reporter_id);
+  $reporter->execute();
+  $reporter = $reporter->fetch(PDO::FETCH_ASSOC);
  ?>
  <!DOCTYPE html>
  <html lang="pt-br">
@@ -32,28 +55,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          	<li><a href="../dashboard/dashboard_admin.php">Pagina Inicial</a></li>
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuários<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="../dashboard/users.php">Usuários Cadastrados</a></li>
-              <li><a href="../dashboard/new_user.php">Novo Usuário</a></li>
-            </ul>
-          </li>
-            <li class="dropdown">
+          	<li><a href="dashboard.php">Pagina Inicial</a></li>
+          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pautas<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="../pautas/add_pauta_admin.php">Adicionar Pautas</a></li>
-              <li><a href="../pautas/pautas_finalizadas_admin.php">Pautas Finalizadas</a></li>
-              <li><a href="../pautas/pautas_conclusao_admin.php">Pautas em conclusão</a></li>
+              <li><a href="pauta_finalizadas.php">Pautas Finalizadas</a></li>
+              <li><a href="pauta_conclusao.php">Pautas em conclusão</a></li>
             </ul>
           </li>
-            <li><a href="../pautas/sobre_admin.php">Sobre</a></li>
-            <li class="dropdown">
+            <li><a href="sobre.php">Sobre</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuarioNome']; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../dashboard/troca_senha.php">Alterar Senha</a></li>
+                <li><a href="troca_senha.php">Alterar Senha</a></li>
                 <li><a href="../login/sair.php">Sair</a></li>
               </ul>
             </li>
@@ -63,21 +77,28 @@
     </nav>
     <div class="container theme-showcase" role="main">
       <div class="page-header">
-        <h1>Pautas Finalizadas</h1>
+        <h1><?php echo $pauta['titulo']; ?></h1>
       </div>
-      <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-      <?php if ($total>0) {
-        while($pauta = $query->fetch(PDO::FETCH_ASSOC)){ ?>
-        <div class="col-md-3">
-          <h2><?php echo $pauta['titulo']; ?></h2>
-          <p><?php echo $pauta['descricao']; ?></p>
-          <p><a class="btn btn-default" href="pautas_visualizar_admin.php?id=<?php echo $pauta['id']; ?>" role="button">Ver detalhes &raquo;</a></p>
-        </div>
-        <?php }} ?>
+      <div class="col-md-12">
+        <h3>Tema: <?php echo $pauta['tema']; ?></h3>
       </div>
-     </div>
+      <div class="col-md-12" style="padding-top: 2%;">
+        <h4>Descrição:</h4>
+        <p><?php echo $pauta['descricao']; ?></p>
+      </div>      
+      <div class="col-md-4">
+          <h2>Editor:</h2>
+          <p><?php echo $editor['nome']; ?></p>
+      </div> 
+      <div class="col-md-4">
+          <h2>Fotógrafo:</h2>
+          <p><?php echo $fotografo['nome']; ?></p>
+      </div>
+      <div class="col-md-4">
+          <h2>Repórter:</h2>
+          <p><?php echo $reporter['nome']; ?></p>
+        </div>   
+     </div>  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
  </body>

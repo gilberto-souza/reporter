@@ -3,16 +3,20 @@
 	include_once("../login/seguranca.php");
 	include_once("../BD/BD.php");
   $acesso=$_SESSION['acesso'];
-	$dados = "SELECT * FROM usuario WHERE nivel_acesso_ID!='$acesso'";
-  $dados = $conecta->query($dados);
-	$total = mysqli_num_rows($dados);
+
+  $dados = "SELECT * FROM usuario WHERE nivel_acesso_ID!= ?";
+  $query = $conect->prepare($dados);
+  $query->bindparam('1',$acesso);
+  $query->execute();
+  $total = $query->rowCount();
+  
  ?>
  <!DOCTYPE html>
  <html lang="pt-br">
  <head>
  	<meta charset="UTF-8">
  	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
- 	<title>Usuários</title>
+ 	<title>Repórter Junino</title>
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="../css/estilo.css">
  </head>
@@ -26,7 +30,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Reporter Junino</a>
+          <a class="navbar-brand" href="#">Repórter Junino</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -64,7 +68,7 @@
         <h1>Usuários Cadastrados</h1>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12 col-md-12">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -81,7 +85,7 @@
             </thead>
             <tbody>            
             <?php if ($total>0) {
-            	while($linha = mysqli_fetch_assoc($dados)){ ?>
+            	while($linha = $query->fetch(PDO::FETCH_ASSOC)){ ?>
 				<tr>
 					<td><?php echo $linha['id'];?></td>
 					<td><?php echo $linha['nome'];?></td>
